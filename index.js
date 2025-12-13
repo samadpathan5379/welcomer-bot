@@ -110,7 +110,6 @@ client.on("guildMemberAdd", async (member) => {
       .setTitle("👋 Welcome!")
       .setDescription(messageText)
       .setThumbnail(member.user.displayAvatarURL())
-      .setImage("https://media.giphy.com/media/OkJat1YNdoD3W/giphy.gif") // welcome GIF
       .setTimestamp();
 
     welcomeChannel.send({ embeds: [embed] });
@@ -147,3 +146,4 @@ client.on("guildMemberRemove", (member) => {
 client.login(config.token).catch((err) => {
   console.error("❌ LOGIN ERROR:", err);
 });
+

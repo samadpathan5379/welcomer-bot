@@ -1,9 +1,9 @@
-// ================== IMPORTS ==================
-const { 
-  Client, 
-  GatewayIntentBits, 
-  EmbedBuilder, 
-  PermissionsBitField 
+]// ================== IMPORTS ==================
+const {
+  Client,
+  GatewayIntentBits,
+  EmbedBuilder,
+  PermissionsBitField
 } = require("discord.js");
 const express = require("express");
 
@@ -60,7 +60,6 @@ client.on("messageCreate", async (message) => {
   const args = message.content.slice(config.prefix.length).trim().split(/ +/);
   const command = args.shift().toLowerCase();
 
-  // ===== SET WELCOME CHANNEL =====
   if (command === "setwelcome") {
     const channel = message.mentions.channels.first();
     if (!channel) return message.reply("❌ Mention a channel.");
@@ -68,7 +67,6 @@ client.on("messageCreate", async (message) => {
     return message.reply(`✅ Welcome channel set to ${channel}`);
   }
 
-  // ===== SET LOG CHANNEL =====
   if (command === "setlogs") {
     const channel = message.mentions.channels.first();
     if (!channel) return message.reply("❌ Mention a channel.");
@@ -76,7 +74,6 @@ client.on("messageCreate", async (message) => {
     return message.reply(`✅ Logs channel set to ${channel}`);
   }
 
-  // ===== SET WELCOME TEXT =====
   if (command === "setwelcometext") {
     const text = args.join(" ");
     if (!text) return message.reply("❌ Provide welcome text.");
@@ -84,7 +81,6 @@ client.on("messageCreate", async (message) => {
     return message.reply("✅ Welcome text updated.");
   }
 
-  // ===== TOGGLE WELCOME =====
   if (command === "welcome") {
     if (!["on", "off"].includes(args[0])) {
       return message.reply("❌ Use `!welcome on` or `!welcome off`");
@@ -93,7 +89,6 @@ client.on("messageCreate", async (message) => {
     return message.reply(`✅ Welcome messages **${args[0]}**`);
   }
 
-  // ===== TOGGLE LOGS =====
   if (command === "logs") {
     if (!["on", "off"].includes(args[0])) {
       return message.reply("❌ Use `!logs on` or `!logs off`");
@@ -102,12 +97,10 @@ client.on("messageCreate", async (message) => {
     return message.reply(`✅ Logs **${args[0]}**`);
   }
 
-  // ===== MEMBER COUNT =====
   if (command === "members") {
     return message.reply(`👥 Total members: **${message.guild.memberCount}**`);
   }
 
-  // ===== AUTO ROLE =====
   if (command === "setautorole") {
     const role = message.mentions.roles.first();
     if (!role) return message.reply("❌ Mention a role.");
@@ -152,7 +145,7 @@ client.on("guildMemberAdd", async (member) => {
     }
   }
 
-  // ===== WELCOME MESSAGE =====
+  // ===== WELCOME MESSAGE (CHANNEL) =====
   if (config.welcomeEnabled && welcomeChannel) {
     const embed = new EmbedBuilder()
       .setColor("Green")
@@ -162,6 +155,16 @@ client.on("guildMemberAdd", async (member) => {
       .setTimestamp();
 
     welcomeChannel.send({ embeds: [embed] });
+  }
+
+  // ===== DM WELCOME =====
+  try {
+    await member.send(
+      `👋 Welcome to **${member.guild.name}**!\n\n` +
+      welcomeMessage.replace(/<@!?(\d+)>/g, member.user.username)
+    );
+  } catch (err) {
+    console.log("⚠️ Could not DM user (DMs closed)");
   }
 
   // ===== LOG JOIN =====

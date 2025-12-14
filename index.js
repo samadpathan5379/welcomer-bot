@@ -1,4 +1,4 @@
-]// ================== IMPORTS ==================
+// ================== IMPORTS ==================
 const {
   Client,
   GatewayIntentBits,
@@ -190,3 +190,4 @@ client.on("guildMemberRemove", (member) => {
 
 // ================== LOGIN ==================
 client.login(config.token).catch(console.error);
+
